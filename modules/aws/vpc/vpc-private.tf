@@ -68,3 +68,9 @@ resource "aws_route_table_association" "worker_routing" {
   route_table_id = "${aws_route_table.private_routes.*.id[count.index]}"
   subnet_id      = "${aws_subnet.worker_subnet.*.id[count.index]}"
 }
+
+resource "aws_route_table_association" "rds_routing" {
+  count          = "${var.external_vpc_id == "" ? var.rds_az_count : 0}"
+  route_table_id = "${aws_route_table.private_routes.*.id[count.index]}"
+  subnet_id      = "${aws_subnet.rds_subnet.*.id[count.index]}"
+}
