@@ -6,6 +6,10 @@ variable "worker_az_count" {
   type = "string"
 }
 
+variable "rds_az_count" {
+  type = "string"
+}
+
 variable "cidr_block" {
   type = "string"
 }
@@ -34,6 +38,10 @@ variable "external_worker_subnets" {
   type = "list"
 }
 
+variable "external_rds_subnets" {
+  type = "list"
+}
+
 variable "extra_tags" {
   description = "Extra AWS tags to be applied to created resources."
   type        = "map"
@@ -53,11 +61,19 @@ variable "worker_subnets" {
   type = "list"
 }
 
+variable "rds_subnets" {
+  type = "list"
+}
+
 variable "master_azs" {
   type = "list"
 }
 
 variable "worker_azs" {
+  type = "list"
+}
+
+variable "rds_azs" {
   type = "list"
 }
 

@@ -39,6 +39,30 @@ resource "aws_subnet" "worker_subnet" {
     ), var.extra_tags)}"
 }
 
+resource "aws_subnet" "rds_subnet" {
+  count = "${var.external_vpc_id == "" ? var.rds_az_count : 0}"
+
+  vpc_id = "${data.aws_vpc.cluster_vpc.id}"
+
+  # Add 3 to the starting subnet number to account for the worker subnets
+  # cidrsubnet(iprange, newbits, netnum)
+  cidr_block = "${length(var.rds_subnets) > 1 ?
+    "${element(var.rds_subnets, count.index)}" :
+    "${cidrsubnet(data.aws_vpc.cluster_vpc.cidr_block, 4, count.index + 3 + var.rds_az_count)}"
+  }"
+
+  availability_zone = "${var.rds_azs[count.index]}"
+
+  tags = "${merge(map(
+      "Name", "${var.cluster_name}-rds-${ "${length(var.rds_azs)}" > 0 ?
+    "${var.rds_azs[count.index]}" :
+    "${data.aws_availability_zones.azs.names[count.index]}" }",
+      "kubernetes.io/cluster/${var.cluster_name}", "shared",
+      "kubernetes.io/role/internal-elb", "",
+      "tectonicClusterID", "${var.cluster_id}"
+    ), var.extra_tags)}"
+}
+
 resource "aws_route_table_association" "worker_routing" {
   count          = "${var.external_vpc_id == "" ? var.worker_az_count : 0}"
   route_table_id = "${aws_route_table.private_routes.*.id[count.index]}"
