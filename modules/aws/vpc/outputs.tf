@@ -12,6 +12,14 @@ output "worker_subnet_ids" {
   value = "${local.worker_subnet_ids}"
 }
 
+output "rds_subnet_ids" {
+  value = "${local.rds_subnet_ids}"
+}
+
+output "etcd_subnet_ids" {
+  value = "${local.etcd_subnet_ids}"
+}
+
 output "etcd_sg_id" {
   value = "${aws_security_group.etcd.id}"
 }
