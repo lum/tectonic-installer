@@ -61,6 +61,11 @@ variable "enable_etcd_sg" {
   default     = true
 }
 
+variable "enable_rds_sg" {
+  description = "If set to true, security groups for rds nodes are being created"
+  default     = true
+}
+
 variable "master_subnets" {
   type = "list"
 }

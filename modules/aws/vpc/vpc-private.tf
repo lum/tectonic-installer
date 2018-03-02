@@ -59,7 +59,8 @@ resource "aws_subnet" "rds_subnet" {
     "${data.aws_availability_zones.azs.names[count.index]}" }",
       "kubernetes.io/cluster/${var.cluster_name}", "shared",
       "kubernetes.io/role/internal-elb", "",
-      "tectonicClusterID", "${var.cluster_id}"
+      "tectonicClusterID", "${var.cluster_id}",
+      "Type", "RDS"
     ), var.extra_tags)}"
 }
 
